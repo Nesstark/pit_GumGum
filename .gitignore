@@ -2,6 +2,8 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+
+# Unity generated folders
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
@@ -30,6 +32,9 @@
 /[Aa]ssets/Plugins/Editor/JetBrains*
 # Jetbrains Rider personal-layer settings
 *.DotSettings.user
+
+# JetBrains project files
+.idea/
 
 # Visual Studio cache directory
 .vs/
@@ -84,9 +89,6 @@ InitTestScene*.unity*
 /[Aa]ssets/StreamingAssets/aa*
 /[Aa]ssets/AddressableAssetsData/link.xml*
 /[Aa]ssets/Addressables_Temp*
-# By default, Addressables content builds will generate addressables_content_state.bin
-# files in platform-specific subfolders, for example:
-# /Assets/AddressableAssetsData/OSX/addressables_content_state.bin
 /[Aa]ssets/AddressableAssetsData/*/*.bin*
 
 # Visual Scripting auto-generated files
@@ -97,3 +99,32 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# --- macOS system files ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Thumbnails
+._.DS_Store
+
+# Files that might appear in external disk
+.Spotlight-V100
+.Trashes
+
+# macOS specific metadata
+.DS_Store?
+.AppleDesktop
+.metadata_never_index
+.fseventsd
+
+# --- VS Code ---
+.vscode/*
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Ignore workspace files
+*.code-workspace
