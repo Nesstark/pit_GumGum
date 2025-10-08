@@ -1,16 +1,22 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public Transform player; // Reference to the player
-    public float detectionRange = 15f; // Range within which the enemy detects the player
-    public float movementSpeed = 3.5f; // Speed of the enemy when following the player
-    private bool isDead = false; // To track if the enemy is dead
-    private bool isColliding = false; // To track collision with the player
+    [Header("Movement")]
+    public Transform player;
+    public float detectionRange = 15f;
+    public float movementSpeed = 3.5f;
 
-    private NavMeshAgent navMeshAgent; // NavMeshAgent for pathfinding
-    private Animator animator; // Reference to the animator component
+    [Header("Attack")]
+    public float attackCooldown = 2f; // seconds between attacks
+
+    private bool isDead = false;
+    private bool canAttack = true;
+
+    private NavMeshAgent navMeshAgent;
+    private Animator animator;
 
     void Start()
     {
@@ -20,29 +26,18 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        // Only process movement and animations if the enemy is not dead
         if (isDead) return;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // Check if the player is within detection range
+        // Move towards player if within detection range
         if (distanceToPlayer <= detectionRange)
         {
             FollowPlayer();
         }
         else
         {
-            Idle();
-        }
-
-        // If the enemy is colliding with the player, trigger attack animation
-        if (isColliding == true && animator != null)
-        {
-                animator.SetBool("isColliding", true); // Trigger attack animation
-        }
-        else
-        {
-            animator.SetBool("isColliding", false); // Reset attack animation
+            StopMoving();
         }
     }
 
@@ -50,46 +45,42 @@ public class EnemyMovement : MonoBehaviour
     {
         if (navMeshAgent != null && navMeshAgent.isActiveAndEnabled)
         {
+            navMeshAgent.speed = movementSpeed;
             navMeshAgent.SetDestination(player.position);
-        }
-
-        if (animator != null)
-        {
-            animator.SetBool("isCrawling", true); // Switch to crawling animation
         }
     }
 
-    void Idle()
+    void StopMoving()
     {
         if (navMeshAgent != null && navMeshAgent.isActiveAndEnabled)
         {
-            navMeshAgent.ResetPath(); // Stop moving
+            navMeshAgent.ResetPath();
         }
+    }
 
+    void OnCollisionStay(Collision collision)
+    {
+        // Use OnCollisionStay so the enemy can attack repeatedly while touching player
+        if (collision.gameObject.CompareTag("Player") && canAttack)
+        {
+            StartCoroutine(AttackRoutine());
+        }
+    }
+
+    private IEnumerator AttackRoutine()
+    {
+        canAttack = false;
+
+        // Play attack animation once
         if (animator != null)
         {
-            animator.SetBool("isCrawling", false); // Switch to idle animation
+            animator.SetTrigger("attack"); // use a trigger instead of bool
         }
-    }
 
+        // Optionally: deal damage to player here
 
-    // This will be triggered when the enemy collides with the player or another object
-    void OnCollisionEnter(Collision collision)
-    {
-        // Check if the enemy collided with the player (player tag must be "Player")
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isColliding = true; // Set isColliding to true
-        }
-    }
-
-    // This will be triggered when the enemy stops colliding with the player or another object
-    void OnCollisionExit(Collision collision)
-    {
-        // Check if the enemy stopped colliding with the player (player tag must be "Player")
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isColliding = false; // Set isColliding to false
-        }
+        // Wait for cooldown
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
     }
 }
