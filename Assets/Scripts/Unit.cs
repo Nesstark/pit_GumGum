@@ -4,13 +4,16 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [Header("Stats")]
-    [Tooltip("Current health")] [SerializeField]
+    [Tooltip("Current health")]
+    [SerializeField]
     private int health = 100;
 
-    [Tooltip("Maximum health")] [SerializeField]
+    [Tooltip("Maximum health")]
+    [SerializeField]
     private int maxHealth = 100;
 
-    [Tooltip("Base damage")] [SerializeField]
+    [Tooltip("Base damage")]
+    [SerializeField]
     private int damage = 10;
 
     public event Action<int> OnHealthChanged;
@@ -31,30 +34,30 @@ public class Unit : MonoBehaviour
     {
         if (amount <= 0 || IsDead()) return 0;
 
-        int prev = health;
+        int oldHealth = health;
         health = Mathf.Clamp(health - amount, 0, maxHealth);
-        int applied = prev - health;
+        int newHealth = oldHealth - health;
 
         OnHealthChanged?.Invoke(health);
 
         if (health <= 0)
             Die();
-        
-        return applied;
+
+        return newHealth;
     }
 
     public virtual int Heal(int amount)
     {
         if (amount <= 0 || IsDead()) return 0;
 
-        int prev = health;
+        int oldHealth = health;
         health = Mathf.Clamp(health + amount, 0, maxHealth);
-        int healed = health - prev;
+        int newHealth = health - oldHealth;
 
-        if (healed > 0)
+        if (newHealth > 0)
             OnHealthChanged?.Invoke(health);
 
-        return healed;
+        return newHealth;
     }
 
     protected virtual void Die()
@@ -75,5 +78,10 @@ public class Unit : MonoBehaviour
     {
         if (target == null || IsDead()) return 0;
         return target.TakeDamage(damage);
+    }
+    
+    public virtual void OnTriggerEnter(Collider other)
+    {
+        throw new NotImplementedException(this.gameObject.name);
     }
 }
