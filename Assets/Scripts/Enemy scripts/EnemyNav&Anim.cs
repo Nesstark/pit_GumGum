@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -9,11 +8,7 @@ public class EnemyMovement : MonoBehaviour
     public float detectionRange = 15f;
     public float movementSpeed = 3.5f;
 
-    [Header("Attack")]
-    public float attackCooldown = 2f; // seconds between attacks
-
     private bool isDead = false;
-    private bool canAttack = true;
 
     private NavMeshAgent navMeshAgent;
     private Animator animator;
@@ -30,7 +25,6 @@ public class EnemyMovement : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // Move towards player if within detection range
         if (distanceToPlayer <= detectionRange)
         {
             FollowPlayer();
@@ -58,29 +52,16 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    void OnCollisionStay(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        // Use OnCollisionStay so the enemy can attack repeatedly while touching player
-        if (collision.gameObject.CompareTag("Player") && canAttack)
+        if (other.CompareTag("Player"))
         {
-            StartCoroutine(AttackRoutine());
+            if (animator != null)
+            {
+                animator.SetTrigger("attack");
+            }
+
+            Debug.Log("Enemy attacked player (trigger)!");
         }
-    }
-
-    private IEnumerator AttackRoutine()
-    {
-        canAttack = false;
-
-        // Play attack animation once
-        if (animator != null)
-        {
-            animator.SetTrigger("attack"); // use a trigger instead of bool
-        }
-
-        // Optionally: deal damage to player here
-
-        // Wait for cooldown
-        yield return new WaitForSeconds(attackCooldown);
-        canAttack = true;
     }
 }
