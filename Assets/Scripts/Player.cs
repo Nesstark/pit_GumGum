@@ -18,4 +18,9 @@ public class Player : Unit
         int dmg = base.Attack(target); // base dmg for now, can remove when we implement velocity stuff
         return target.TakeDamage(dmg);
     }
+
+    public override void OnTriggerEnter(Collider other)
+    {
+        this.TakeDamage(5); // TEMP; for testing damage and UI
+    }
 }
