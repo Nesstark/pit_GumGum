@@ -1,76 +1,44 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class LegRotationController7 : MonoBehaviour
 {
-    public Transform hips;
     public Transform leftLeg;
     public Transform rightLeg;
-    public float rotationAngle = 45f;
-    public float switchInterval = 1f;
-    public float rotationSpeed = 90f;
+    public float swingAngle = 30f;      // how far the legs swing
+    public float swingSpeed = 3f;       // how fast they swing
+    public float moveThreshold = 0.05f; // minimum velocity before walking animation plays
 
-    private float timer;
-    private bool rotateLeftLeg = true;
-    private bool rotateLegsForward = false;
-    private bool rotatingLegs = false;
+    private NavMeshAgent agent;
+    private float swingTimer = 0f;
 
     private void Start()
     {
-        timer = switchInterval;
+        agent = GetComponentInParent<NavMeshAgent>();
+        // ↑ get the agent from the parent, not this object
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.W) && !rotatingLegs)
+        bool isMoving = agent != null && agent.velocity.magnitude > moveThreshold;
+
+        if (isMoving)
         {
-            rotateLegsForward = true;
-            rotatingLegs = true;
+            swingTimer += Time.deltaTime * swingSpeed;
 
-        }
-        else if (Input.GetKey(KeyCode.S) && !rotatingLegs)
-        {
-            rotateLegsForward = false;
-            rotatingLegs = true;
-        }
+            // Smooth back-and-forth leg motion using sine wave
+            float leftLegAngle = Mathf.Sin(swingTimer) * swingAngle;
+            float rightLegAngle = Mathf.Sin(swingTimer + Mathf.PI) * swingAngle;
 
-        timer -= Time.deltaTime;
-
-        if (timer <= 0f && rotatingLegs)
-        {
-            rotatingLegs = false;
-            SwitchLegRotation();
-            timer = switchInterval;
-        }
-
-        if (rotatingLegs)
-        {
-            RotateLegs();
-        }
-    }
-
-    private void SwitchLegRotation()
-    {
-        rotateLeftLeg = !rotateLeftLeg;
-    }
-
-    private void RotateLeg(bool leftLegRotation, bool forwardRotation)
-    {
-        Transform legToRotate = leftLegRotation ? leftLeg : rightLeg;
-        float rotationDirection = forwardRotation ? 1f : -1f;
-        float rotationStep = rotationSpeed * Time.deltaTime * rotationDirection * rotationAngle;
-
-        legToRotate.Rotate(Vector3.right, rotationStep);
-    }
-
-    private void RotateLegs()
-    {
-        if (rotateLegsForward)
-        {
-            RotateLeg(rotateLeftLeg, true);
+            // Apply rotations locally (doesn't affect world transform)
+            leftLeg.localRotation = Quaternion.Euler(leftLegAngle, 0, 0);
+            rightLeg.localRotation = Quaternion.Euler(rightLegAngle, 0, 0);
         }
         else
         {
-            RotateLeg(rotateLeftLeg, false);
+            // Return legs to neutral when not moving
+            leftLeg.localRotation = Quaternion.Lerp(leftLeg.localRotation, Quaternion.identity, Time.deltaTime * 5f);
+            rightLeg.localRotation = Quaternion.Lerp(rightLeg.localRotation, Quaternion.identity, Time.deltaTime * 5f);
         }
     }
 }
