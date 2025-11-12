@@ -122,9 +122,12 @@ Icon
 
 # --- VS Code ---
 .vscode/*
-!.vscode/extensions.json
-!.vscode/tasks.json
-!.vscode/launch.json
+.vscode/extensions.json
+.vscode/tasks.json
+.vscode/launch.json
+
+# Visual Studio solution configuration
+.vsconfig
 
 # Ignore workspace files
 *.code-workspace
