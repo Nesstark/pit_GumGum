@@ -17,7 +17,6 @@ public class Unit : MonoBehaviour
     private int damage = 10;
 
     public event Action<int> OnHealthChanged;
-
     public event Action OnDied;
 
     public int Health => health;
@@ -63,7 +62,7 @@ public class Unit : MonoBehaviour
     protected virtual void Die()
     {
         OnDied?.Invoke();
-        gameObject.SetActive(false); // TODO; trigger death animation, drops, etc.
+        gameObject.SetActive(false); // TODO: Add death animation, drops, etc.
     }
 
     public bool IsDead() => health <= 0;
@@ -79,9 +78,10 @@ public class Unit : MonoBehaviour
         if (target == null || IsDead()) return 0;
         return target.TakeDamage(damage);
     }
-    
+
+    // Option 1: No trigger behavior, no errors.
     public virtual void OnTriggerEnter(Collider other)
     {
-        throw new NotImplementedException(this.gameObject.name);
+        // Intentionally left empty
     }
 }

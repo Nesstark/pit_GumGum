@@ -1,23 +1,22 @@
 using UnityEngine;
 
-public class EnemyCombatAnimated : Unit
+public class EnemyCombatAnimated : MonoBehaviour
 {
     private Animator animator;
     private bool inAttackRange = false;
+    public Collider attackRangeCollider;
 
-    void Awake()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
     }
 
-    void Update()
+    private void Update()
     {
-        if (IsDead()) return;
-
-        // Tell animator whether target is in range
+        // Update animator bool
         animator.SetBool("inRange", inAttackRange);
 
-        // If in range, play attack animation (looping or event-based)
+        // Trigger attack when in range
         if (inAttackRange)
         {
             animator.SetTrigger("attack");
@@ -26,29 +25,12 @@ public class EnemyCombatAnimated : Unit
 
     private void OnTriggerEnter(Collider other)
     {
-        Unit targetUnit = other.GetComponent<Unit>();
-
-        if (targetUnit != null && !targetUnit.IsDead())
-        {
-            inAttackRange = true;
-        }
+        // When ANY collider enters — or you can filter by tag if needed
+        inAttackRange = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Unit targetUnit = other.GetComponent<Unit>();
-
-        if (targetUnit != null)
-        {
-            inAttackRange = false;
-        }
-    }
-
-    public override int Attack(Unit target)
-    {
-        if (target == null || target.IsDead()) return 0;
-
-        target.TakeDamage(Damage);
-        return Damage;
+        inAttackRange = false;
     }
 }
