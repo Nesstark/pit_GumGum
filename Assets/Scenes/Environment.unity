@@ -3344,6 +3344,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1371298895}
   - component: {fileID: 1371298896}
+  - component: {fileID: 1371298897}
   m_Layer: 0
   m_Name: RightHand
   m_TagString: Untagged
@@ -3436,6 +3437,67 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+--- !u!114 &1371298897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371298894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db8a258728123c64bbccbf69d7893f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inflateButtonAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Inflate Button
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: e0c4f660-9ea7-4e89-987d-b68a6db0d8f3
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: b1d746d8-3208-4b83-9c1c-567c64bfa7c2
+        m_Path: <OculusTouchController>/primaryButton
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Inflate Button
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  handTransform: {fileID: 1371298895}
+  headTransform: {fileID: 613074180}
+  controllerTransform: {fileID: 1371298895}
+  inflatedScale: 3
+  inflationSpeed: 8
+  deflationSpeed: 5
+  faceDetectionDistance: 0.4
+  inflationDuration: 15
+  normalDamage: 10
+  inflatedDamage: 50
+  normalForce: 100
+  inflatedForce: 500
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  inflationEffect: {fileID: 0}
+  inflationSound: {fileID: 0}
+  hapticDeviceAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Haptic Device
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: deed7b01-e22a-472e-b562-e8f7d82e1093
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
 --- !u!1 &1414422724 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c0c55f032a159154aa58293443c2c79f, type: 3}
