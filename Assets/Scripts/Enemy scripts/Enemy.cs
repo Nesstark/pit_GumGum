@@ -2,24 +2,21 @@ using UnityEngine;
 
 public class EnemyCombat : Unit
 {
-    private Animator animator;
+    [Header("Which collider should trigger damage?")]
+    public Collider damageTrigger;
 
-    void Awake()
+    protected override void Awake()  // change to private if Unit has no Awake()
     {
-        animator = GetComponent<Animator>();
-    }
+        base.Awake();                // remove this line if Unit has no Awake()
 
-    // Deal damage on trigger using the Unit system
-    public override void OnTriggerEnter(Collider other)
-    {
-        Unit targetUnit = other.GetComponent<Unit>();
-        if (targetUnit != null && !targetUnit.IsDead())
+        if (damageTrigger != null)
+            damageTrigger.isTrigger = true;
+
+        // Add DamageForwarder to the trigger collider
+        if (damageTrigger != null)
         {
-            if (animator != null)
-                animator.SetTrigger("attack");
-
-            int dmgDealt = Attack(targetUnit); // uses base.damage
-            Debug.Log($"Enemy dealt {dmgDealt} damage to {targetUnit.gameObject.name}");
+            DamageForwarder forwarder = damageTrigger.gameObject.AddComponent<DamageForwarder>();
+            forwarder.Init(this);
         }
     }
 
@@ -27,7 +24,6 @@ public class EnemyCombat : Unit
     {
         if (target == null || target.IsDead()) return 0;
 
-        // Use the base Unit damage
         target.TakeDamage(Damage);
         return Damage;
     }
@@ -35,7 +31,10 @@ public class EnemyCombat : Unit
     protected override void Die()
     {
         base.Die();
-        if (animator != null)
-            animator.SetTrigger("death");
+
+        // Remove all Configurable Joints
+        ConfigurableJoint[] joints = GetComponentsInChildren<ConfigurableJoint>();
+        foreach (var joint in joints)
+            Destroy(joint);
     }
 }
