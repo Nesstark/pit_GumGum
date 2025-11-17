@@ -1,4 +1,3 @@
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Player : Unit
@@ -15,12 +14,8 @@ public class Player : Unit
         // TODO; need to implement velocity based damage calculation
         // e.g. dmg = baseDmg * (currentVelocity / maxVelocity) or whatever we end up doing
 
-        int dmg = base.Attack(target); // base dmg for now, can remove when we implement velocity stuff
-        return target.TakeDamage(dmg);
-    }
-
-    public override void OnTriggerEnter(Collider other)
-    {
-        this.TakeDamage(5); // TEMP; for testing damage and UI
+        // Use base implementation which already applies the unit's base damage
+        return base.Attack(target);
     }
 }
+

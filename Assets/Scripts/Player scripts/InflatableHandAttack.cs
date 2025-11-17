@@ -189,29 +189,39 @@ public class InflatableHandAttack : MonoBehaviour
     
     private void HitEnemy(Collision collision)
     {
-        float damage = isInflated ? inflatedDamage : normalDamage;
+        int damageInt = Mathf.RoundToInt(isInflated ? inflatedDamage : normalDamage);
         float force = isInflated ? inflatedForce : normalForce;
-        
-        // Apply damage if enemy has health component
-        var enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
-        if (enemyHealth != null)
+
+        // Prefer Unit-based damage system
+        Unit unit = collision.gameObject.GetComponent<Unit>();
+        if (unit != null)
         {
-            enemyHealth.TakeDamage(damage);
+            unit.TakeDamage(damageInt);
         }
-        
+        else
+        {
+            // Fallback to legacy EnemyHealth component (keeps compatibility)
+            var enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(isInflated ? inflatedDamage : normalDamage);
+            }
+        }
+
         // Apply physics force
         Rigidbody enemyRb = collision.rigidbody;
         if (enemyRb != null)
         {
-            Vector3 forceDirection = (collision.transform.position - handTransform.position).normalized;
+            Vector3 handPos = (handTransform != null) ? handTransform.position : transform.position;
+            Vector3 forceDirection = (collision.transform.position - handPos).normalized;
             enemyRb.AddForce(forceDirection * force, ForceMode.Impulse);
         }
-        
+
         // Strong haptic feedback on hit
         float hapticStrength = isInflated ? 1.0f : 0.3f;
         SendHapticFeedback(hapticStrength, 0.15f);
-        
-        Debug.Log($"Hit enemy with {(isInflated ? "INFLATED" : "normal")} hand! Damage: {damage}");
+
+        Debug.Log($"Hit enemy with {(isInflated ? "INFLATED" : "normal")} hand! Damage: {damageInt}");
     }
     
     // Public methods for external access

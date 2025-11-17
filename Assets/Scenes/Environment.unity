@@ -2430,7 +2430,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 649913606}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9ace971aa11d24428ddef2fa9395ee4, type: 3}
   m_Name: 
@@ -2720,6 +2720,7 @@ GameObject:
   m_Component:
   - component: {fileID: 895380894}
   - component: {fileID: 895380895}
+  - component: {fileID: 895380896}
   m_Layer: 0
   m_Name: LeftHand
   m_TagString: Untagged
@@ -2813,6 +2814,27 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+--- !u!65 &895380896
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895380893}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.09, y: 0.13, z: 0.2}
+  m_Center: {x: -0.03, y: 0, z: 0}
 --- !u!1 &903607585 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1570979552690345978, guid: c0c55f032a159154aa58293443c2c79f, type: 3}
@@ -3683,6 +3705,7 @@ GameObject:
   - component: {fileID: 1371298895}
   - component: {fileID: 1371298896}
   - component: {fileID: 1371298897}
+  - component: {fileID: 1371298898}
   m_Layer: 0
   m_Name: RightHand
   m_TagString: Untagged
@@ -3837,6 +3860,27 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
+--- !u!65 &1371298898
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371298894}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.09, y: 0.13, z: 0.21}
+  m_Center: {x: 0.03, y: 0, z: 0}
 --- !u!1 &1414422724 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c0c55f032a159154aa58293443c2c79f, type: 3}
@@ -4248,7 +4292,7 @@ MonoBehaviour:
   - {fileID: 1577749519}
   - {fileID: 1334932924}
   - {fileID: 1160125117}
-  spawnInterval: 15
+  spawnInterval: 10
 --- !u!4 &1577749519
 Transform:
   m_ObjectHideFlags: 0
