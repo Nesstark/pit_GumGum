@@ -21,8 +21,9 @@ public class InflatableHandAttack : MonoBehaviour
     [Header("Combat Settings")]
     [SerializeField] private int normalDamage = 10;
     [SerializeField] private int inflatedDamage = 50;
-    [SerializeField] private float normalForce = 100f;
-    [SerializeField] private float inflatedForce = 500f;
+    [SerializeField] private float normalForce = 400f;
+    [SerializeField] private float inflatedForce = 900f;
+    [SerializeField] private float knockUpFactor = 0.3f;
     [SerializeField] private LayerMask enemyLayer;
 
     [Header("Visual Feedback")]
@@ -174,7 +175,7 @@ public class InflatableHandAttack : MonoBehaviour
         float force = isInflated ? inflatedForce : normalForce;
 
         // Prefer your Unit system
-        Unit unit = collision.gameObject.GetComponent<Unit>();
+        Unit unit = collision.gameObject.GetComponentInParent<Unit>();
         if (unit != null)
         {
             unit.TakeDamage(damageInt);
@@ -182,23 +183,28 @@ public class InflatableHandAttack : MonoBehaviour
         else
         {
             // Legacy fallback
-            var enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
+            var enemyHealth = collision.gameObject.GetComponentInParent<EnemyHealth>();
             if (enemyHealth != null)
                 enemyHealth.TakeDamage(damageInt);
         }
 
+        // Apply physics force with contact-based direction and knock-up
         Rigidbody enemyRb = collision.rigidbody;
         if (enemyRb != null)
         {
             Vector3 handPos = (handTransform != null) ? handTransform.position : transform.position;
-            Vector3 forceDirection = (collision.transform.position - handPos).normalized;
-            enemyRb.AddForce(forceDirection * force, ForceMode.Impulse);
+            ContactPoint contact = collision.GetContact(0);
+
+            Vector3 baseDir = (contact.point - handPos).normalized;
+            Vector3 knockDir = (baseDir + Vector3.up * knockUpFactor).normalized;
+
+            enemyRb.AddForce(knockDir * force, ForceMode.Impulse);
         }
 
         float hapticStrength = isInflated ? 1.0f : 0.3f;
         SendHapticFeedback(hapticStrength, 0.15f);
 
-        Debug.Log($"Hit enemy with {(isInflated ? "INFLATED" : "normal")} hand! Damage: {damageInt}");
+        Debug.Log($"Hit enemy with {(isInflated ? "INFLATED" : "normal")} hand! Damage: {damageInt}, Force: {force}");
     }
 
     public bool IsHandInflated() => isInflated;
