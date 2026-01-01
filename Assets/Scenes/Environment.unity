@@ -1077,6 +1077,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRangeCollider: {fileID: 1522094392}
+--- !u!114 &74414902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74414899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b96545b782dd404d9121f1fdf97530c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  maxHealth: 100
+  damage: 10
+  damageTrigger: {fileID: 0}
 --- !u!4 &90613404 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2397906195525222207, guid: e414afbcff052e047a0a62b723676783, type: 3}
@@ -2721,6 +2737,7 @@ GameObject:
   - component: {fileID: 895380894}
   - component: {fileID: 895380895}
   - component: {fileID: 895380896}
+  - component: {fileID: 895380897}
   m_Layer: 0
   m_Name: LeftHand
   m_TagString: Untagged
@@ -2835,6 +2852,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.09, y: 0.13, z: 0.2}
   m_Center: {x: -0.03, y: 0, z: 0}
+--- !u!114 &895380897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895380893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db8a258728123c64bbccbf69d7893f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inflateButtonAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Inflate Button
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: c41f2686-c341-4e11-94b7-605ef0e23531
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  handTransform: {fileID: 895380894}
+  headTransform: {fileID: 613074180}
+  controllerTransform: {fileID: 895380894}
+  inflatedScale: 3
+  inflationSpeed: 8
+  deflationSpeed: 5
+  faceDetectionDistance: 0.4
+  inflationDuration: 15
+  normalDamage: 10
+  inflatedDamage: 50
+  normalForce: 100
+  inflatedForce: 500
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  inflationEffect: {fileID: 0}
+  inflationSound: {fileID: 0}
+  hapticDeviceAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Haptic Device
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: bf97f97d-1e69-499c-8d50-124afb84327d
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
 --- !u!1 &903607585 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1570979552690345978, guid: c0c55f032a159154aa58293443c2c79f, type: 3}
@@ -3704,8 +3774,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1371298895}
   - component: {fileID: 1371298896}
-  - component: {fileID: 1371298897}
   - component: {fileID: 1371298898}
+  - component: {fileID: 1371298897}
   m_Layer: 0
   m_Name: RightHand
   m_TagString: Untagged
@@ -3981,6 +4051,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9069075176793395542, guid: e414afbcff052e047a0a62b723676783, type: 3}
       insertIndex: -1
       addedObject: {fileID: 74414901}
+    - targetCorrespondingSourceObject: {fileID: 9069075176793395542, guid: e414afbcff052e047a0a62b723676783, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 74414902}
   m_SourcePrefab: {fileID: 100100000, guid: e414afbcff052e047a0a62b723676783, type: 3}
 --- !u!1001 &1483452182
 PrefabInstance:
